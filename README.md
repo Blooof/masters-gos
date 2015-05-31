@@ -23,3 +23,5 @@ Programming:
 2. ok
 3. ?
 4. ?
+19. ok
+20. ok
