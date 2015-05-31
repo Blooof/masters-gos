@@ -1,0 +1,7 @@
+http://courses.csail.mit.edu/6.851/spring14/scribe/lec7.pdf
+
+Сортировка 
+Можно обычный MergeSort со слияением 2 массивов 
+FunnelSort http://courses.csail.mit.edu/6.895/fall03/projects/papers/youn.pdf
+Обычные стек и очередь cache-oblivious
+Дерево отрезков https://youtu.be/EQ3CiNWMgvo?t=1503 (25:00)
