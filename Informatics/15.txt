@@ -1,0 +1,5 @@
+http://www.kgeorgiy.info/courses/dbms/slides/transactions.xhtml
+http://profyclub.ru/docs/221
+http://the-paper-trail.org/blog/consensus-protocols-two-phase-commit/
+http://the-paper-trail.org/blog/consensus-protocols-three-phase-commit/
+http://the-paper-trail.org/blog/consensus-protocols-paxos/
