@@ -1,0 +1,90 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[russian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+
+\begin{document}
+\section*{23. CTL и CTL*: синтаксис, семантика, примеры формул. Сравнение выразительной силы CTL*, CTL, LTL. Верификация CTL. Верификация CTL*.}
+\url{http://is.ifmo.ru/verification/velder_verification_posobie.pdf}
+\url{http://download.yandex.ru/class/lifshits/lecture-note03.pdf}
+
+\textbf{Семантика CTL}(стр. 77).
+
+Семантика CTL определяется в терминах отношения выполняемости
+(обозначаемого $\vDash$) между моделью $M$, одним из ее состояний $s$ и
+формулой $\phi$. Как и ранее, запишем $M, s\vDash \phi$ вместо $(M, s, \phi) \in \vDash$.
+При этом имеем $M, s\vDash \phi$ тогда и только тогда, когда $\phi$ верно в
+состоянии $s$ модели $M$. Как и ранее, будем опускать $M$, когда модель
+ясна из контекста.
+Пусть $p \in AP$ -- атомарное предложение, а тройка $M = (S, R, Label)$ --
+CTL-модель, $s \in S$ и $\phi, \psi$ -- CTL-формулы. Отношение выполняемости
+$\vDash$ определяется следующим образом:
+\begin{align*}
+    &s\vDash p &&\Leftrightarrow p \in Label(s);\\
+    &s\vDash \lnot \phi &&\Leftrightarrow \lnot(s\vDash \phi);\\
+    &s\vDash (\phi \vee \psi) &&\Leftrightarrow (s\vDash \phi) \vee (s \vDash \psi);\\
+    &s\vDash EX \phi &&\Leftrightarrow \exists \sigma \in P_M(s): \sigma[1]\vDash \phi;\\
+    &s\vDash E[\phi U \psi] &&\Leftrightarrow \exists \sigma \in P_M(s): (\exists j \ge 0: \sigma[j]\vDash \psi \wedge (\forall 0 \le k < j: \sigma[k]\vDash \phi));\\
+    &s\vDash A[\phi U \psi] &&\Leftrightarrow \forall \sigma \in P_M(s): (\exists j \ge 0: \sigma[j]\vDash \psi \wedge (\forall 0 \le k < j: \sigma[k]\vDash \phi)).
+\end{align*}
+$EX \phi$ верно в состоянии $s$, если и только если существует путь $\sigma$,
+начинающийся в состоянии $s$, такой, что в следующем состоянии
+этого пути $\sigma[1]$ выполняется свойство $\phi$.
+
+$A[\phi U \psi]$ верно в состоянии $s$, если и только если каждый путь,
+начинающийся в $s$, имеет в начале конечный префикс (возможно,
+состоящий только из $s$) такой, что $\psi$ выполняется в последнем
+состоянии этого префикса и $\phi$ выполняется во всех состояниях
+префикса перед $s$.
+
+$E[\phi U \psi]$ верно в состоянии $s$, если и только если существует путь,
+начинающийся в $s$, который удовлетворяет свойству $\phi U \psi$
+
+\textbf{Семантика $CTL^*$}(стр. 83).
+
+Пусть $p \in AP$ -- атомарное
+предложение, $M = (S, R, Label)$ -- CTL-модель (модель Крипке), $s \in S$ --
+состояние модели, $\sigma \in P_M(s)$ -- путь, $\phi$ и $\psi$ -- формулы состояния, $\alpha$ и $\beta$
+-- формулы пути. Введем два отношения выполняемости,
+справедливость которых будем обозначать так: $M, s \vDash_{State} \phi$ и
+$M, \sigma \vDash{Path} \alpha$.
+Как и ранее, будем опускать модель $M$ в случае, когда она
+подразумевается контекстом.
+Отношение $\vDash_{State}$ задается следующим образом:
+\begin{align*}
+    &s\vDash_{State} p &&\Leftrightarrow p \in Label(s);\\
+    &s\vDash_{State} \lnot \phi &&\Leftrightarrow \lnot (s\vDash_{State} \phi);\\
+    &s\vDash_{State} (\phi \vee \psi) &&\Leftrightarrow (s\vDash_{State} \phi) \vee (s\vDash_{State} \psi);\\
+    &s\vDash_{State} E \beta &&\Leftrightarrow \exists \sigma \in P_M(s): (\sigma\vDash_{Path} \beta).
+\end{align*}
+Аналогично зададим отношение $\vDash_{Path}$:
+\begin{align*}
+    &\sigma \vDash_{Path} \phi &&\Leftrightarrow \sigma[0]\vDash_{State} \phi;\\
+    &\sigma \vDash_{Path} \lnot \beta &&\Leftrightarrow \lnot (\sigma\vDash_{Path} \beta);\\
+    &\sigma \vDash_{Path} (\alpha \vee \beta) &&\Leftrightarrow (\sigma\vDash_{Path} \alpha) \vee (\sigma\vDash_{Path} \beta);\\
+    &\sigma \vDash_{Path} X \beta &&\Leftrightarrow \sigma^1\vDash_{Path} \beta;\\
+    &\sigma \vDash_{Path} (\alpha U \beta) &&\Leftrightarrow \exists j \ge 0: \sigma^j\vDash_{Path} \beta \wedge (\forall 0 \le k < j: \sigma^k\vDash_{Path} \alpha).
+\end{align*}
+Здесь $\sigma^1, \sigma^j$ и $\sigma^k$ -- соответствующие суффиксы пути $\sigma$.
+
+\textbf{Сравнение выразительной силы CTL*, CTL, LTL}(стр. 85).
+
+Лучше смотреть методичку, там картинки и доказательства.
+\begin{itemize}
+    \item $LTL \in CTL^*$;
+    \item $CTL \in CTL^*$;
+    \item $LTL \cap CTL \ne \varnothing$;
+    \item $LTL \nsubseteq CTL$;
+    \item $CTL \nsubseteq LTL$;
+\end{itemize}
+Примеры формул:
+\begin{itemize}
+    \item $A[F(p \wedge X\ p)] \in LTL \setminus CTL$;
+    \item $AG[EF\ q] \in CTL \setminus LTL$;
+    \item $A[p\ U\ q] \in LTL \cap CTL$;
+    \item $A[F(p \wedge X\ p)]\vee AG(EF\ q) \in CTL^* \setminus (LTL \cup CTL)$.
+\end{itemize}
+\end{document}
