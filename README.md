@@ -17,6 +17,7 @@ Informatics:
 3. ok
 4. ok
 14. ok, but from wiki
+18. ok
 
 Programming:
 
